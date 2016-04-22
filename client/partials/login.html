@@ -1,0 +1,6 @@
+<div class="container" ng-controller = 'usersController as UC'>
+    <h1>Questions App Login</h1>
+    <p class="error" ng-if="UC.error.length > 0">{{UC.error}}</p>
+    <input type = 'text' ng-model='UC.newUser.name'>
+    <button ng-click = 'UC.login()'>Log In</button>
+</div>
