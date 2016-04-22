@@ -47,7 +47,7 @@ questionsApp.factory('userFactory', function($http, $sessionStorage){
     factory.login = function(newUser, callback){
         console.log("user logging in", newUser)
         $http.post('/login', newUser).success(function(output){
-            $session.storage.currUser = output;
+            $sessionStorage.currUser = output;
             console.log($sessionStorage.currUser);
             callback(output);
         });
