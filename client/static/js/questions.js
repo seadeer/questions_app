@@ -20,6 +20,22 @@ questionsApp.config(function($routeProvider){
         templateUrl: 'partials/newquestion.html'
     })
 
+    .when('/logout', {
+        redirectTo: '/login'
+    })
+
+    .when('/questions/:id/newanswer', {
+        templateUrl: 'partials/newanswer.html'
+    })
+
+    .when('/questions/:id', {
+        templateUrl: 'partials/showquestion.html'
+    })
+
+    .otherwise({
+        redirectTo: '/home'
+    })
+
 })
 //USER FACTORY
 questionsApp.factory('userFactory', function($http, $sessionStorage){
