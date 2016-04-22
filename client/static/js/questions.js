@@ -178,6 +178,105 @@ questionsApp.controller('questionsController', function(userFactory, questionFac
 
 })
 //ANSWER FACTORY
+questionsApp.factory('answerFactory', function($http){
+    var factory = {};
+    var that = this;
+    factory.answers = [];
+    factory.question = {};
 
+    factory.index = function(qid, callback){
+        $http.get('/questions/'+qid).success(function(output){
+            factory.answers = output;
+            console.log(output);
+            callback(factory.answers);
+        });
+    };
+
+    factory.create = function(answer, callback){
+        $http.post('/answers/new', answer).success(function(output){
+            callback(output);
+        })
+    };
+
+    factory.like = function(id, likes, callback){
+        var likes = {likes: likes}
+        $http.post('/answers/'+id, likes).success(function(output){
+            callback(output);
+        });
+    };
+
+    return factory;
+});
 //ANSWER CONTROLLER
+questionsApp.controller('answersController', function(userFactory, questionFactory, answerFactory, $location, $routeParams){
+    var that = this;
+    this.theQuestion = {};
+    this.user = userFactory.user();
+    this.errors = [];
+    this.answers = [];
+
+    this.index = function(){
+        var qid = $routeParams.id;
+        answerFactory.index(qid, function(data){
+            that.theQuestion = data;
+            that.answers = data.answers;
+        });
+    };
+    this.index();
+
+    this.logout = function(){
+        console.log(that.user);
+        userFactory.logout(function(){
+            $location.url('/login');
+        });
+    };
+
+    this.create = function(){
+        that.errors = [];
+        that.theAnswer = {};
+        //Question validations
+        console.log(that.newAnswer);
+        if(typeof that.newAnswer !== 'undefined'){
+            if(that.newAnswer.length < 5){
+                that.errors.push("Answer too short!")
+            }
+        }
+        else{
+            that.errors.push("Empty answer!")
+        }
+        //If no errors, send off to factory
+        if(that.errors.length <= 0){
+            console.log("Creating new answer, validations passed!")
+            var answer = {
+                answer: that.newAnswer.answer,
+                details: that.newAnswer.details,
+                username: that.user.name,
+                user_id: that.user._id,
+                question_id: that.theQuestion._id,
+                likes: 0,
+            };
+            console.log(answer)
+            answerFactory.create(answer, function(data){
+                that.newAnswer = {};
+                console.log(data);
+            });
+            $location.url('/questions/'+$routeParams.id);
+            that.index();
+        }
+    };
+
+    this.like = function(index){
+        that.theAnswer = that.theQuestion.answers[index];
+        var id = that.theQuestion.answers[index]._id
+        console.log("Liked this answer: ", id);
+        that.theAnswer.likes ++;
+        var likes = that.theAnswer.likes;
+        answerFactory.like(id, likes, function(data){
+            console.log(data)
+        })
+
+    }
+
+
+})
 
