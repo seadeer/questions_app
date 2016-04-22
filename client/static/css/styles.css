@@ -49,3 +49,19 @@
     font-weight: bold;
 }
 
+.answer{
+    background: #E7E243;
+    padding: 10px;
+    margin: 10px;
+}
+    .answer .details{
+        width: 70%;
+        font-size: 0.8em;
+        margin-left: 20px;
+        display: inline-block;s
+    }
+
+    .answer .likes{
+        display: inline-block;
+    }
+
