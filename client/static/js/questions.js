@@ -52,9 +52,52 @@ questionsApp.factory('userFactory', function($http, $sessionStorage){
             callback(output);
         });
     }
+
+    factory.logout = function(callback){
+        console.log("logged out!");
+        $sessionStorage.$reset();
+        $sessionStorage.currUser = {};
+        callback();
+    };
+
+    factory.user = function(){
+        return $sessionStorage.currUser;
+    };
+
+    return factory;
 })
 
 //USER CONTROLLER
+questionsApp.controller('usersController', function(userFactory, $location){
+    var that = this;
+    this.error = ''
+    this.user = userFactory.user()
+    
+    this.login = function(){
+        if(typeof(that.newUser) != 'undefined' && that.newUser.name.length >= 3){
+        userFactory.login(that.newUser, function(data){
+            that.newUser = data;
+
+            $location.url('/home');
+        });
+    }
+    else{
+        that.error = "User name should be longer than 3 characters!"
+    }
+    };
+
+
+
+    this.logout = function(){
+        console.log(that.user);
+        userFactory.logout(function(){
+            that.user = {};
+            $location.url('/login');
+        });
+    };
+
+})
+
 
 //QUESTION FACTORY
 
