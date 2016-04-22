@@ -1,0 +1,18 @@
+<div class="subdiv" ng-controller = 'questionsController as QC'>
+    <a href="#/home">Home</a> | <a href='#/questions/new'>Add a Question</a> | <a href="#/" ng-click="QC.logout()">Log Out</a>
+    <h1>New Question</h1>
+    <form name="form" novalidate>
+        <p>Question:</p>
+        <div ng-show='form.$submitted || form.question.$touched'>
+            <p class="error" ng-show="form.question.$error.required"> Question is required!</p>
+            <p class="error" ng-show="form.question.$error.minlength">Question should be at least 10 characters long!</p>
+        </div>
+        <p>
+            <textarea name="question" ng-model="QC.newQuestion.question" required="" minlength="10"></textarea>
+        </p>
+        <p>Description (optional):</p>
+        <p>
+            <textarea ng-model="QC.newQuestion.description"></textarea>
+        </p>
+        <input type="submit" ng-click="QC.create()">
+</div>

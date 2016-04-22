@@ -1,3 +1,17 @@
-<div class="container" ng-controller = 'questionsController as QC'>
-    <a href="#/home">Home</a><a href='#/questions/new'></a>
+<div class="subdiv" ng-controller = 'questionsController as QC'>
+    <a href="#/home">Home</a> | <a href='#/questions/new'>Add a Question</a> | <a href="#/" ng-click="QC.logout()">Log Out</a>
+    <h2>Welcome {{QC.user.name}}</h2>
+    <h1>Questions dashboard</h1>
+    <input ng-model="filter_name" placeholder="search...">
+    <table>
+        <thead>
+            <td>Question</td>
+            <td>Answers</td>
+            <td>Actions</td>
+        </thead>
+        <tr ng-repeat="question in QC.questions | filter:filter_name">
+            <td>{{question.question}}</td>
+            <td>{{question.answers.length}}</td>
+            <td><a href='#/questions/{{question._id}}'>Show</a>  <a href='#/questions/{{question._id}}/newanswer'>Answer</a></td>
+        </tr>
 </div>
