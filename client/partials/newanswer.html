@@ -1,0 +1,20 @@
+<div class="subdiv" ng-controller = 'answersController as AC'>
+    <a href="#/home">Home</a> | <a href='#/questions/new'>Add a Question</a> | <a href="#/" ng-click="AC.logout()">Log Out</a>
+    <h1>{{AC.theQuestion.question}}</h1>
+    <h3>{{AC.theQuestion.description}}</h3>
+    <form name="form" novalidate>
+        <p>Answer:</p>
+        <div ng-show='form.$submitted || form.answer.$touched'>
+            <p class="error" ng-show="form.answer.$error.required"> Answer is required!</p>
+            <p class="error" ng-show="form.answer.$error.minlength">Answer should be at least 5 characters long!</p>
+        </div>
+        <p>
+            <textarea name="answer" ng-model="AC.newAnswer.answer" required="" minlength="5"></textarea>
+        </p>
+        <p>Supporting details for your answer (optional):</p>
+        <p>
+            <textarea ng-model="AC.newAnswer.details"></textarea>
+        </p>
+        <input type="submit" ng-click="AC.create()">
+        <a href="#/questions/{{AC.theQuestion._id}}"><button>Cancel</button></a>
+</div>
